@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AvatarUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,7 +19,8 @@ class AvatarController extends Controller
             Storage::disk('public')->delete($oldAvatar);
         }
 
-        auth()->user()->update(['avatar' => $path]);
+        $user = Auth::user();
+        $user->update(['avatar' => $path]);
         
         return Redirect::route('profile.edit')->with('message', 'Avatar is changed');
     }
