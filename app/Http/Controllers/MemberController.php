@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request, Member $member): View
     {
         $search = $request->input('search');
     
-        $query = Member::query();
+        $query = $member->query();
 
         if ($search) {
             $query->where('nik', 'like', '%' . $search . '%')
@@ -31,7 +31,6 @@ class MemberController extends Controller
             ]);
         }
 
-        $member = Member::all();
         return view('member.index',[
             'member' => $member
         ]);
@@ -42,18 +41,10 @@ class MemberController extends Controller
         return view('member.create');
     }
 
-    public function store(MemberRequest $request): RedirectResponse
+    public function store(MemberRequest $request, Member $member): RedirectResponse
     {
-        // $validatedData = $request->validate([
-        //     'nik' => 'required|unique:members',
-        //     'full_name' => 'required',
-        //     'address' => 'required',
-        //     'phone_number' => 'required',
-        //     'deposit_balance' => 'required|integer',
-        // ]);
-
         $validatedData = $request->validated();
-        Member::create($validatedData);
+        $member->create($validatedData);
         return redirect('member')->with('success', 'Member added successfully!');
     }
 
@@ -66,14 +57,6 @@ class MemberController extends Controller
 
     public function update(MemberRequest $request, Member $member): RedirectResponse
     {
-        // $validatedData = $request->validate([
-        //     'nik' => 'required|unique:members,nik,' . $member->id,
-        //     'full_name' => 'required',
-        //     'address' => 'required',
-        //     'phone_number' => 'required',
-        //     'deposit_balance' => 'required|integer',
-        // ]);
-
         $validatedData = $request->validated();
         $member->update($validatedData);
         return redirect('member')->with('success', 'Member edited successfully!');
