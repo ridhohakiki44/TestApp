@@ -9,7 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                        
+
+                @if($errors->has('nik'))
+                    <p class="text-red-500">{{ $errors->first('nik') }}</p>
+                @endif
+
                 <form method="post" action="{{ route('member.update', $member) }}">
                     @csrf
                     @method('patch')
