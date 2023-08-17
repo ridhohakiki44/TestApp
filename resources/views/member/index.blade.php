@@ -78,9 +78,30 @@
                                         {{-- Delete Button --}}
                                         <button
                                             x-data=""
-                                            x-on:click.prevent="$dispatch('open-modal', 'confirm-member-deletion')"
+                                            x-on:click.prevent="$dispatch('open-modal', 'confirm-member-deletion-{{ $data->id }}')"
                                             class="font-medium text-xs rounded-lg px-2 py-1 bg-red-600 hover:bg-red-700 text-white"
                                         >Delete</button>
+
+                                        <x-modal name="confirm-member-deletion-{{ $data->id }}" :show="false" focusable>
+                                            <form action="{{ route('member.delete', $data) }}" method="post" class="p-6">
+                                                @csrf
+                                                @method('delete')
+                    
+                                                <h2 class="text-lg font-medium text-gray-900">
+                                                    {{ __('Are you sure you want to delete this member?') }}
+                                                </h2>
+                    
+                                                <div class="mt-6 flex justify-end">
+                                                    <x-secondary-button x-on:click="$dispatch('close')">
+                                                        {{ __('Cancel') }}
+                                                    </x-secondary-button>
+                                    
+                                                    <x-danger-button class="ml-3">
+                                                        {{ __('Delete') }}
+                                                    </x-danger-button>
+                                                </div>
+                                            </form>
+                                        </x-modal>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -88,26 +109,7 @@
                         </table>
                     </div>
 
-                    <x-modal name="confirm-member-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-                        <form action="{{ route('member.delete', $data) }}" method="post" class="p-6">
-                            @csrf
-                            @method('delete')
-
-                            <h2 class="text-lg font-medium text-gray-900">
-                                {{ __('Are you sure you want to delete this member?') }}
-                            </h2>
-
-                            <div class="mt-6 flex justify-end">
-                                <x-secondary-button x-on:click="$dispatch('close')">
-                                    {{ __('Cancel') }}
-                                </x-secondary-button>
-                
-                                <x-danger-button class="ml-3">
-                                    {{ __('Delete') }}
-                                </x-danger-button>
-                            </div>
-                        </form>
-                    </x-modal>
+                    
 
                 </div>
             </div>
