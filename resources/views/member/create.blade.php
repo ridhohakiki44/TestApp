@@ -14,10 +14,14 @@
                     <p class="text-red-500">{{ $errors->first('nik') }}</p>
                 @endif
                         
-                <form method="post" action="{{ route('member.store') }}">
+                <form method="post" action="{{ route('member.store') }}" enctype="multipart/form-data">
                     @csrf
                     @method('patch')
 
+                    <div class="mb-6">
+                        <label for="avatar" class="block mb-2 text-sm font-medium ">Avatar</label>
+                        <input type="file" id="avatar" name="avatar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
                     <div class="mb-6">
                         <label for="nik" class="block mb-2 text-sm font-medium ">NIK</label>
                         <input type="text" id="nik" name="nik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>

@@ -7,6 +7,7 @@ use App\Models\Member;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MemberController extends Controller
 {
@@ -44,6 +45,12 @@ class MemberController extends Controller
     public function store(MemberRequest $request, Member $member): RedirectResponse
     {
         $validatedData = $request->validated();
+
+        if ($request->hasFile('avatar')) {
+            $path = Storage::disk('public')->put('member/avatars', $request->file('avatar'));
+            $validatedData['avatar'] = $path;
+        }
+
         $member->create($validatedData);
         return redirect('member')->with('success', 'Member added successfully!');
     }
@@ -58,12 +65,26 @@ class MemberController extends Controller
     public function update(MemberRequest $request, Member $member): RedirectResponse
     {
         $validatedData = $request->validated();
+
+        if ($request->hasFile('avatar')) {
+            $path = Storage::disk('public')->put('member/avatars', $request->file('avatar'));
+            $validatedData['avatar'] = $path;
+            
+            if ($oldAvatar = $member->avatar){
+                Storage::disk('public')->delete($oldAvatar);
+            }
+        }
+
         $member->update($validatedData);
         return redirect('member')->with('success', 'Member edited successfully!');
     }
 
     public function delete(Member $member): RedirectResponse
     {
+        if ($oldAvatar = $member->avatar){
+            Storage::disk('public')->delete($oldAvatar);
+        }
+
         $member->delete();
         return redirect()->back()->with('success', 'Member was successfully deleted!');
     }

@@ -22,6 +22,7 @@ class MemberRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'avatar' => 'image',
             'nik' => 'required|unique:members,nik,' . ($this->member ? $this->member->id : ''),
             'full_name' => 'required',
             'address' => 'required',

@@ -34,6 +34,9 @@
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
+                                        Avatar
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         NIK
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -56,6 +59,13 @@
                             <tbody>
                                 @foreach($member as $data)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="px-6 py-4">
+                                        @if ($data->avatar)
+                                            <img src="{{ "/storage/$data->avatar" }}" alt="member avatar" class="w-16 rounded-full">
+                                        @else
+                                            <img src="{{ "/storage/member/avatars/default-avatar.png" }}" alt="member avatar" class="w-16 rounded-full">    
+                                        @endif
+                                    </td>
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $data->nik }}
                                     </th>
@@ -71,7 +81,7 @@
                                     <td class="px-6 py-4">
                                         {{ $data->deposit_balance }}
                                     </td>
-                                    <td class="px-6 py-4 flex">
+                                    <td class="px-6 py-4">
                                         {{-- Edit Button --}}
                                         <a href="{{ route('member.edit', $data) }}" class="font-medium text-xs rounded-lg px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white mr-2">Edit</a>
 
